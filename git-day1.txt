@@ -1,0 +1,205 @@
+--  깃 환경에서 리눅스 명령어 연습 --
+$ cd  ./Desktop    --> cd  디렉토리명  : 디렉토리 이동
+$ pwd  -->  작업하고 있는 경로 보여 줌
+$  cd ../      -->  상위 디렉토리로 이동
+$ pwd  -->  홈 디렉토리로 이동된 상태
+
+$  chmod -c 644 Desktop  #  리눅스에서 사용 가능  , 허용 원한 변경
+
+$ ls -la
+$ ls -r   -->  디렉토리의 내용을 거꾸로 정렬해서 출력
+$ ls -t   -->  시간 순서대로 보여 줌
+
+--  디렉토리 이동 ->  cd  디렉토리명
+$ cd c:    -> 절대경로로 디렉토리 이동  
+$ cd ~    ->  홈 디렉토리로 이동
+
+--  상대 경로 사용 --
+$  cd ../    -->  상위 디렉토리로 이동
+$ cd ~   -> 사용자의 홈 디렉토리로 이동
+$ cd Desktop  or  cd ./Desktop   --> ./ :  현재 디렉토리를 의미 함
+
+--  디렉토리 생성 및 삭제 --
+$ cd ./Desktop
+$ mkdir testdir   -->  testdir 디렉토리 생성 
+$ ls 
+
+$ rmdir  디렉토리명   --> 디렉토리가 비어있는 경우 디렉토리 삭제
+$ rm -r testdir   --> -r  recursive 
+
+$ mkdir test
+$ cd ./test   --> test  디렉토리로 이동
+$ mkdir sub   --> test/sub  생성 됨
+$ cd ~
+$ cd ~/Desktop
+
+--> desktop에   test  디렉토리 생성  후 test  디렉토리로 이동
+$ mkdir test
+$ cd test
+
+-->  파일 편집 --
+$ vi   파일명  
+  명령어 모드로 파일을 open
+  입력모드 -> i 또는 a 를 입력하면 입력모드로 전환
+  입력모드에서 명령어 모드로 전환은 ->  esc  키를 누름 
+
+ -- 파일 저장 
+명령어 모드에서  
+   :w  ->  파일명으로 저장하고 계속 편집
+   :wq  ->  파일명으로 저장하고  편집기 빠져 나감
+   :q!  ->  수정된 내용을 저장하지 않고  편집기 빠져 나감
+
+$ vi test.txt
+
+-- 파일의 내용을 화면에 출력 --
+$ cat   -->  키보드에서 입력 받아 화면에 출력하는 명령어,
+          --> 종료는  ctrl + c
+
+$ cat [<] 파일명  -->  파일로 부터 자료를 읽어 와서 화면에 출력
+$ cat >  파일명 --> 키보드에서 입력받아 파일에 저장 
+$ cat > cat.txt
+
+$ cat   파일명1  파일명2 > 새로운파일명 --> 두 개의 파일을 새로운 파일명에 저장
+$ cat   파일명 >> 기존파일명   --> 기존파일의 마지막에 파일명의 자료 추가
+
+$ exit -->  터미널 종료
+
+-- GIT  저장소 관리 --
+--> 깃 초기화
+$ git init   -->  버전관리 하고자 하는 디렉토리로 이동해서   init 명령어 수행
+              -->  해당 디렉토리에 ./git   디렉토리가 생성 됨
+
+  -->  새로운 파일 생성
+$ vi hello.txt    --> 1 을 편집하고 저장 
+$ git status   --> git 의 상태 확인  
+ 1)  새로운 파일 ->  스테이지에 추가  :   git add  파일명
+ 2) 스테이지의 저장된 파일을 레포지토리에 저장
+
+-- 스테이지의 파일을 제거 
+$ git rm --cached  파일명
+$ git rm --cached hello.txt
+$ git status  --> stage 에서 파일이 내려 옴
+
+-- 스테이지에 파일 추가
+$ git add hello.txt
+
+--  스테이지에 저장된 파일을 레포지토리로 이동 
+$ git commit -m "message1"    --> 메세지와 함께 레포지토리에 저장
+$ git status   --> 깃의 상태 확인 
+
+-- 레포지토리에 저장된 버전 확인 
+ $ git log
+
+$ vi hello.txt  --> 수정
+
+-- 수정된 파일을 바로 레포지토리에 저장 가능
+$ git commit -am 'message2'
+
+-- 수정된 파일을 마지막 버전의 내용으로 복귀 하고자 할 경우
+$ git diff  --> 마지막 버전과 수정된 내용 비교
+$ git restore 파일명
+
+-- stage  에 추가한 파일 되돌리기 --
+1) 처음  stage에 추가한 경우 :   
+     $ git rm --cached  파일명
+2) 수정된 파일을 stage에 추가한 경우 : 
+     $ git restore --staged  파일명   :  stage에서 파일 내림
+
+--  git status
+-- git의 로그 상태 확인
+$ git log --stat
+
+$ vi hello2.txt  ->   파일 수정후 저장
+$ git add hello2.txt
+$ git commit -m 'delete b,c,d'
+
+--  마지막 커밋한 메세지 수정
+$ git commit --amend
+ --> vi 편집기가 나타남 
+ --> 메세지 수정 후 저장
+
+-- 작업 되돌리기 : working tree에서 수정한 파일을 되돌리기
+$ vi hello.txt   --> 수정
+$ git status  --> modified 파일이 존재한다고 나옴 
+$ git status
+On branch main
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   hello.txt
+ --  수정을 원래대로 원위치
+$ git checkout  --  hello.txt  -->  수정 전의 파일의 내용으로 돌아감
+$ git status 
+ On branch main
+ nothing to commit, working tree clean
+
+-- 작업 되돌리기 : stage 에서 수정한 파일을 내리기
+$ git restore --staged  file명
+$ git reset HEAD hello.txt
+$ git checkout  --  hello.txt
+$ git status   ->  수정한 정보 없음
+   On branch main
+   nothing to commit, working tree clean
+
+--  마지막 커밋 되돌리기 
+$ git add  hello2.txt
+$ git commit -m 'message6'  실행
+$ git reset HEAD^  -> HEAD 이전 작업으로 되돌리기
+   -> hello2.txt  가 unstaged 상태 , 파일만 수정한 상태로 돌아 옴
+
+--  특정 커밋으로 되돌리기 
+$ git reset 커밋해시
+$ vi rev.txt   -> a 문자 추가
+$ git add rev.txt
+$ git commit -m 'R1'
+
+-- 2.  rev.txt ->  b 라인 추가
+-- 3. rev.txt -> c  추가 후 -> commit message는 'R3'
+-- 4. rev.txt -> d  추가 후 -> commit message는 'R4'
+
+-->특정한 커밋 위치로 되돌리기
+$ git reset  --hard  이동하고자 하는 커밋 해시
+$ git reset --hard   
+
+
+
+-- 디렉토리 생성 --
+$ mkdir  test-git
+
+-- 디렉토리 이동
+$ cd test-git
+
+--  test-git 디렉토리를 깃 저장소로 지정
+$ git init  --> ~(main)  .git/ 디렉토리 생성 됨
+
+--  새로운 파일   hello.txt
+$ vi hello.txt  -> i -> a -> esc -> :wq
+
+-- 깃의 상태 확인
+$ git status   
+$ git add hello.txt   #  stage 에 새로운 파일 올리기
+$ git commit -m 'ver1'    # repository에 파일 버전 저장하기
+
+-- 깃의 커밋된 정보 확인
+ $ git log    # HEAD -> ver1
+
+$ vi rev.txt 파일 생성  -> i -> 1 -> esc -> :wq
+--  새로운 파일  stage에 올리기
+$ git add rev.txt
+
+$ vi hello.txt -> b 를 추가 #  a -> b -> esc -> :wq
+
+-- rev.txt를  stage  에서  working 으로 내리기
+$ git restore --staged rev.txt
+
+-- rev.txt를 수정 
+
+-- ver1로 커밋을 되돌리기
+$ git reset --hard 커밋 해시  =>  이전 버전 삭제 됨
+
+$ git revert 커밋 해시  =>  이전 버전 삭제  안됨
+
+-- 깃 저장소를 만드는 방법
+1. $  mkdir git_dir ;   cd git_dir  ;   git init
+2. $ git init git_dir 
+    

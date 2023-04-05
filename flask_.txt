@@ -1,0 +1,30 @@
+--  관리자 모드로 cmd 창을 실행 
+$ flask --app  프로그램명 run --debug  --> --app 가 지원되지 않는 경우
+
+1.  flask --help  =>  사용법을 보고 지시하는 대로 실행
+2.  flask를 최신 버전으로 다운로드
+  $ pip install flask --upgrade --user
+
+3.  가상환경을 설정해서 가상환경에 설치 
+-- conda 명령어를 사용하여 가상 환경 생성
+$ conda create -n 가상환경명 python=버전
+$ conda create -n venv python=3.7
+
+->  가상환경으로 이동 
+$ conda activate 가상환경명 --> vnev 환경으로 이동
+ -> $ conda activate venv 
+
+$   conda deactivate  -->  가상환경 탈출
+
+$ conda activate venv 
+$ pip install flask   --> flask  설치
+
+
+-- jupyter notebook 에서 가상환경에서 작업하고자 
+$ pip install ipykernel    -->  base 에 설치
+(base) $ python -m ipykernel install --user --name venv --display-name "venv-flask"
+
+
+
+
+
