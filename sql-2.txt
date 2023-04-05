@@ -160,9 +160,113 @@ order by
 -- DDL : object  관련 명령어  ->  자동  commit
    object 의 종류 :  table, index, view, sequence, synonym, procedure, function, trigger
 
+-- DDL : create, drop, alter, truncate, comment
+1) object -> table : 실제 자료가 저장되는 object
+  -> usertbl 생성
+  create table usertbl 
+ ( userid varchar(8) not null primary key,
+  name  varchar(20) not null,
+  birthyear  char(4)  not null,
+  addr    varchar(40) not null,
+  telno   varchar(16) null,
+  height smallint null,
+  mdate  date null,
+  email  varchar(40) null
+ );
+ INSERT INTO usertbl VALUES('LSG', '이승기', '1987', '서울', '010-1234-5678', 182, '2008-8-8', null);
+ drop table if exists buytbl;
+create table buytbl
+( num int auto_increment not null primary key,
+  userid varchar(8) not null,
+ prodname varchar(10) not null,
+ groupname char(4) null,
+ price int not null,
+ amount smallint not null,
+ foreign key(userid)  references usertbl(userid)
+);
+
+INSERT INTO usertbl VALUES('LSG', '이승기', '1987', '서울',  '1111111', 182, '2008-8-8',null);
+INSERT INTO usertbl VALUES('KBS', '김범수', '1979', '경남', '2222222', 173, '2012-4-4',null);
+INSERT INTO usertbl VALUES('KKH', '김경호', '1971', '전남', '3333333', 177, '2007-7-7',null);
+
+INSERT INTO buytbl VALUES(NULL, 'KBS', '운동화', NULL, 30, 2);
+INSERT INTO buytbl VALUES(NULL, 'KBS', '노트북', '전자', 1000, 1);
+INSERT INTO buytbl VALUES(NULL, 'JYP', '모니터', '전자', 200, 1);  -- error 발생
+
+-- primary key 제약조건의 이름을 부여하면서 설정
+drop table if exists uertbl;
+create table usertbl (
+userid char(8) not null,
+name varchar(20) not null,
+birthyear int not null,
+constraint primary key usertbl_userid_pk (userid));
+
+-- table 생성 : primary key, foreign key 
+-- table 변경 : 제약조건 추가, 삭제, 컬럼 수정, 컬럼 삭제, 컬럼 추가
+
+1) 제약조건 추가 : 
+  add constraint 제약조건명 제약조건종류 (컬럼명)
+alter table usertbl
+  add constraint pk_usertbl_userid primary key (userid); 
+
+2) 제약조건 삭제 : 
+ alter table buytbl
+  drop constraint buytbl_ibfk_1;  
+
+-- not null 제약조건 추가
+alter table usertbl
+add column test char(10);
+
+alter table usertbl
+modify test constraint usertbl_test_nn not null;
+
+-- table 변경
+ - 제약조건 추가, 삭제
+ - 컬럼 추가, 수정, 삭제
+alter table 테이블명
+ add constraint | column 
+ drop column 컬럼명
+ drop foreign key 제약조건명
+        primary key
+
+ modify 컬럼 재정의 
+
+-- mydb 생성
+-- member 테이블 생성 : member_id, member_name, member_passwd, member_email, member_hp, member_indate
+-- product 테이블 생성 : product_id, product_name, product_price, product_detail
+-- order 테이블 생성 : order_id, order_date, order_price, member_id
+-- orderdetail 테이블 생성 : order_id, product_id, amount, money
 
 
 
+create database mydb;
+use mydb;
+create table member(
+	member_id varchar(10) not null primary key, 
+	member_name varchar(20) not null, 
+	member_passwd varchar(20) not null, 
+	member_email varchar(40), 
+	member_hp varchar(16), 
+	member_indate date default (current_date));
+create table product(
+	product_id int auto_incremetn not null primary key, 
+	product_name varchar(50) not null, 
+	product_price int, 
+	product_detail varchar(100))
+create table ordert (
+	order_id int auto_increment not null primary key, 
+	order_date date default (current_date), 
+	order_price int not null, 
+	member_id varchar(10),
+	foreign key (member_id) references member(member_id));
+crate table orderdetail (
+	order_id int,
+	foreign key (order_id) references member(member_id), 
+	product_id int,
+	foreign key (product_id) references product(product_id), 
+	amount int not null, 
+	money int not null);
+alter table orderdetail add primary key (order_id, product_id);
 
 
 
